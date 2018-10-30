@@ -40,10 +40,26 @@ void loop() {
   /* Trigger the LED light HIGH when an ojbect approaches
    *  the sensor within X distance.
    */
-   if (INCHES <= MINIMUM_TRIGGER_DISTANCE)
+
+   POS = 90;
+   //MY_SERVO.write(POS);
+   if (INCHES <= MAXIMUM_TRIGGER_DISTANCE)
+   {
+      MY_SERVO.write(90); 
       digitalWrite(LED_PIN, HIGH);   // Visual Debugging
+      /*
+      for (POS = 90; POS >= 0; POS--)
+      {
+        MY_SERVO.write(POS);
+        delay(15);
+      }
+      */
+   }
     else
+    {
+      MY_SERVO.write(0);
       digitalWrite(LED_PIN, LOW);    // Turn LED off
+    }
    //-------------------------------------------------------//
 
     delay(250);
