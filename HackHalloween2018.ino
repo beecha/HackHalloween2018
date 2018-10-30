@@ -1,4 +1,7 @@
 /* 59 Days of Code - Hack Halloween, October 2018
+ *  An ultrasonic sensor will read the distance of a nearby object.
+ *  When it detects an object within X distance, then it will
+ *  trigger the device.
  *  
  *  - Frank Cha
  */
@@ -10,13 +13,8 @@
 
 
 void loop() {
-  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse.
-  digitalWrite(SENSOR_TRIG_PIN, LOW);
-  delayMicroseconds(5);
-  digitalWrite(SENSOR_TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(SENSOR_TRIG_PIN, LOW);
+  
+  sonicSensor();
 
   // Read the signal from the sensor: a HIGH pulse whose
   // duration is the time (in microseconds) from the sending
@@ -35,32 +33,21 @@ void loop() {
   Serial.print(CM);
   Serial.print("cm");
   Serial.println();
-  
-  //=================== TRIGGER LED LIGHT =================//
-  /* Trigger the LED light HIGH when an ojbect approaches
-   *  the sensor within X distance.
-   */
 
-   POS = 90;
-   //MY_SERVO.write(POS);
    if (INCHES <= MAXIMUM_TRIGGER_DISTANCE)
    {
       MY_SERVO.write(90); 
       digitalWrite(LED_PIN, HIGH);   // Visual Debugging
-      /*
-      for (POS = 90; POS >= 0; POS--)
-      {
-        MY_SERVO.write(POS);
-        delay(15);
-      }
-      */
+      digitalWrite(READY_LED, LOW);
+      flashLED(EYES_LED, 5000);      // Stays triggered for 5 seconds
    }
     else
     {
       MY_SERVO.write(0);
-      digitalWrite(LED_PIN, LOW);    // Turn LED off
+      digitalWrite(LED_PIN, LOW);    // Visual Debugging
+      digitalWrite(READY_LED, HIGH);
+      digitalWrite(EYES_LED, LOW);
     }
-   //-------------------------------------------------------//
-
+    
     delay(250);
 }
